@@ -1,7 +1,6 @@
 const app = require('./server/server');
-const { blue } = require('chalk');
-const log = str => console.log(blue(str));
+const log = require('./log');
 
 app.listen(4000, () => {
-  log(process.env.URI_KEY);
+  log('Listening on port 4000');
 });
