@@ -5,15 +5,36 @@ import { fetchSongs as query, deleteSong as mutation } from '../queries';
 //alias for fetchSongs and deleteSong
 
 class SongList extends Component {
+  async onSongDelete(id) {
+    try {
+      const info = await this.props.mutate({
+        variables: { id }
+      });
+      return this.props.data.refetch();
+    } catch (err) {
+      console.log(err);
+    }
+
+    //gql knows that this query already exists
+    //so we get off the refetch
+  }
+
   render() {
     return (
       !this.props.data.loading && (
         <div>
           <ul className="collection">
             {this.props.data.songs.map(song => {
+              const { id, title } = song;
               return (
-                <li key={song.id} className="collection-item">
-                  {song.title}
+                <li key={id} className="collection-item">
+                  {title}
+                  <i
+                    className="material-icons"
+                    onClick={() => this.onSongDelete(id)}
+                  >
+                    delete
+                  </i>
                 </li>
               );
             })}
@@ -30,6 +51,7 @@ class SongList extends Component {
 //similar to connect in react-redux
 //puts query result inside of props
 
+//ewwww line below
 export default graphql(mutation)(graphql(query)(SongList));
 //executes query query and component are bonded
 
