@@ -7,7 +7,8 @@ import { fetchSongs as query, deleteSong as mutation } from '../queries';
 class SongList extends Component {
   async onSongDelete(id) {
     try {
-      const info = await this.props.mutate({
+      //do not need to store what is being awaited since next operation happens after
+      await this.props.mutate({
         variables: { id }
       });
       return this.props.data.refetch();

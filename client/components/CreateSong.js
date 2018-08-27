@@ -18,18 +18,20 @@ class CreateSong extends Component {
     this.setState({ title: evt.target.value });
   }
 
-  handleSubmit(evt) {
+  async handleSubmit(evt) {
     evt.preventDefault();
-
-    this.props
-      .mutate({
+    try {
+      await this.props.mutate({
         variables: {
           title: this.state.title //take value of input and use for mutation
         },
         refetchQueries: [{ query }] //need to refetch after mutation
-      })
-      .then(() => hashHistory.push('/songs'));
-    this.setState({ title: '' });
+      });
+      this.setState({ title: '' });
+      return hashHistory.push('/songs');
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   render() {
