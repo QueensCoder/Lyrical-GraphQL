@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Link, hashHistory } from 'react-router';
 // import query from '../queries/fetchSongs';
-import { fetchSongs as query } from '../queries';
+import { fetchSongs as query, createSong } from '../queries';
 //gql prevents from queries to be run of the same time
 
 class CreateSong extends Component {
@@ -12,6 +11,9 @@ class CreateSong extends Component {
     this.state = {
       title: ''
     };
+
+    this.onChange = this.onChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   onChange(evt) {
@@ -35,15 +37,14 @@ class CreateSong extends Component {
   }
 
   render() {
-    //why is bind not inside of constructor, causes error when bind is used in constructor
     return (
       <div>
         <Link to="/songs">Go Back</Link>
         <h3>Create a New Song!</h3>
-        <form onSubmit={this.handleSubmit.bind(this)}>
+        <form onSubmit={this.handleSubmit}>
           <label>Song Title:</label>
           <input
-            onChange={this.onChange.bind(this)}
+            onChange={this.onChange}
             value={this.state.title}
             type="text"
             name="title"
@@ -55,13 +56,9 @@ class CreateSong extends Component {
   }
 }
 
-const mutation = gql`
-  mutation AddSong($title: String) {
-    addSong(title: $title) {
-      title
-      id
-    }
-  }
-`;
+export default graphql(createSong)(CreateSong);
 
-export default graphql(mutation)(CreateSong);
+//three ways to bind methods for react
+//1 in constructor
+//2 bind inside of the onchange or onsubmit
+//  write arrow function inside of onChange etc
