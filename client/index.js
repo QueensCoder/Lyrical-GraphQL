@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
-import { App, SongList } from './components/';
+import { App, SongList, CreateSong } from './components/';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 
 import './style/style.css';
@@ -12,10 +12,15 @@ const client = new ApolloClient({ dataIdFromObject: o => o.id });
 const Root = () => (
   <ApolloProvider client={client}>
     <Router history={hashHistory}>
-      <Route exact path="/" component={App} />
-      <Route path="/songs" component={SongList} />
+      <Route path="/" component={App}>
+        <IndexRoute component={SongList} />
+      </Route>
+      <Route path="/songs/new" component={CreateSong} />
     </Router>
   </ApolloProvider>
 );
 
 ReactDOM.render(<Root />, document.querySelector('#root'));
+
+//indexroute is nest inside of a route to send client to
+//component when the path in the route is hit

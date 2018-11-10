@@ -13,11 +13,16 @@ class SongList extends Component {
       <div>Loading</div>
     ) : (
       <div>
-        <ul>
+        <ul className="collection">
           {songs.map(song => (
-            <li key={song.id}>{song.title}</li>
+            <li key={song.id} className="collection-item">
+              {song.title}
+            </li>
           ))}
         </ul>
+        <Link to="/songs/new" className="btn-floating btn-large red right">
+          <i className="material-icons">add</i>
+        </Link>
       </div>
     );
   }

@@ -11,26 +11,22 @@ class CreateSong extends Component {
     this.state = {
       title: ''
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    //have to bind methods to context of this
   }
 
-  onChange(evt) {
-    this.setState({ title: evt.target.value });
-  }
-
-  async handleSubmit(evt) {
+  async onSubmit(evt) {
     evt.preventDefault();
     try {
       await this.props.mutate({
         variables: {
-          title: this.state.title //take value of input and use for mutation
-        },
-        refetchQueries: [{ query }] //need to refetch after mutation
+          title: this.state.title
+        }
       });
       this.setState({ title: '' });
-      return hashHistory.push('/songs');
+      hashHistory.push('/');
+      //wait for new song to be added then clear form
+      //then routes user to the song list
     } catch (err) {
       console.log(err);
     }
@@ -39,16 +35,15 @@ class CreateSong extends Component {
   render() {
     return (
       <div>
-        <Link to="/songs">Go Back</Link>
+        <Link to="/">Back</Link>
         <h3>Create a New Song!</h3>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.onSubmit}>
           <label>Song Title:</label>
           <input
-            onChange={this.onChange}
+            onChange={event => this.setState({ title: event.target.value })}
             value={this.state.title}
             type="text"
-            name="title"
-            placeholder="Enter Title"
+            required
           />
         </form>
       </div>
@@ -57,6 +52,9 @@ class CreateSong extends Component {
 }
 
 export default graphql(createSong)(CreateSong);
+
+//connecting a mutation gives us
+//props.mutate
 
 //three ways to bind methods for react
 //1 in constructor
