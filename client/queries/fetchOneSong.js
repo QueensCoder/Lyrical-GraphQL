@@ -7,8 +7,10 @@ export default gql`
       id
       title
       lyrics {
+        id
         content
       }
     }
   }
 `;
+//instead of makig new queries you can enhance previously written queries

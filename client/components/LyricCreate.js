@@ -19,7 +19,7 @@ class LyricCreate extends Component {
 
   submitHandle(evt) {
     evt.preventDefault();
-    console.log(this.props.songId);
+
     this.props.mutate({
       variables: {
         content: this.state.content,
@@ -30,7 +30,6 @@ class LyricCreate extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <form onSubmit={this.submitHandle}>
         <label>Add Lyrics</label>
