@@ -5,7 +5,19 @@ import { fetchSongs as query, deleteSong as mutation } from '../queries';
 //alias for fetchSongs and deleteSong
 
 class SongList extends Component {
+  async deleteSong(id) {
+    try {
+      await this.props.mutate({ variables: { id } });
+      this.props.data.refetch();
+    } catch (err) {
+      console.log(err);
+    }
+    //get refetch because it was wired up with
+    //get all songs request
+  }
+
   render() {
+    //id is used when deleting a song
     const { songs, loading } = this.props.data;
     //see if song is loading if so display loading
     //if songs loaded map songs to client view
@@ -14,9 +26,12 @@ class SongList extends Component {
     ) : (
       <div>
         <ul className="collection">
-          {songs.map(song => (
-            <li key={song.id} className="collection-item">
-              {song.title}
+          {songs.map(({ id, title }) => (
+            <li key={id} className="collection-item">
+              {title}
+              <i className="material-icons" onClick={() => this.deleteSong(id)}>
+                delete
+              </i>
             </li>
           ))}
         </ul>
@@ -32,7 +47,7 @@ class SongList extends Component {
 //puts query result inside of props
 
 //ewwww line below
-export default graphql(query)(SongList);
+export default graphql(mutation)(graphql(query)(SongList));
 //executes query query and component are bonded
 
 //steps to use query with react component

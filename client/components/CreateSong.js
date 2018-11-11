@@ -21,7 +21,8 @@ class CreateSong extends Component {
       await this.props.mutate({
         variables: {
           title: this.state.title
-        }
+        },
+        refetchQueries: [{ query }]
       });
       this.setState({ title: '' });
       hashHistory.push('/');
@@ -31,6 +32,8 @@ class CreateSong extends Component {
       console.log(err);
     }
   }
+
+  //refetch allows for GQL to run a fetch query again
 
   render() {
     return (

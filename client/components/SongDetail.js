@@ -7,30 +7,12 @@ import LyricList from './LyricList';
 
 class SongDetail extends Component {
   render() {
-    const { song } = this.props.data;
-    console.log(song, 'SONG');
-    if (!song) return <div>Loading...</div>;
-
-    return (
-      <div>
-        <Link to="/">Back</Link>
-        <h3>{song.title}</h3>
-        <div>
-          <LyricList lyrics={song.lyrics} />
-        </div>
-        <div>
-          <LyricCreate />
-        </div>
-      </div>
-    );
+    return <div>some detail</div>;
   }
 }
 
-export default graphql(getOneSong, {
-  options: props => {
-    return { variables: { id: props.params.id } };
-  }
-})(SongDetail);
+export default SongDetail;
+
 //need to take query variables and pass to query
 //for specific queries
 //react router passes id down to props

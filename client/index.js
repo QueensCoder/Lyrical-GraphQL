@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
-import { App, SongList, CreateSong } from './components/';
+import { App, SongList, CreateSong, SongDetail } from './components/';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
-
 import './style/style.css';
+
 const client = new ApolloClient({ dataIdFromObject: o => o.id });
 //uses id to allow apollo store to keep track of data
 
@@ -16,6 +16,7 @@ const Root = () => (
         <IndexRoute component={SongList} />
       </Route>
       <Route path="/songs/new" component={CreateSong} />
+      <Route path="/songs/:id" component={SongDetail} />
     </Router>
   </ApolloProvider>
 );
