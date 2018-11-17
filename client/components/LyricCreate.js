@@ -3,43 +3,53 @@ import { createLyric } from '../queries';
 import { graphql } from 'react-apollo';
 
 class LyricCreate extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       content: ''
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.submitHandle = this.submitHandle.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.clickHandle = this.clickHandle.bind(this);
   }
 
-  handleChange(evt) {
-    this.setState({ content: evt.target.value });
-  }
-
-  submitHandle(evt) {
+  async handleSubmit(evt) {
     evt.preventDefault();
+    //how to access mutation
+    try {
+      await this.props.mutate({
+        variables: {
+          content: this.state.content,
+          songId: this.props.songId
+          //passed in song id from SongDetail
+          //now have access to id from params.match
+        }
+      });
 
-    this.props.mutate({
-      variables: {
-        content: this.state.content,
-        songId: this.props.songId
-      }
-    });
-    this.setState({ content: '' });
+      this.setState({ content: '' });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  clickHandle() {
+    console.log('hi i got clicked');
   }
 
   render() {
     return (
-      <form onSubmit={this.submitHandle}>
-        <label>Add Lyrics</label>
-        <input
-          onChange={this.handleChange}
-          type="text"
-          name="content"
-          value={this.state.content}
-        />
-      </form>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="content">Add a Lyric</label>
+          <input
+            name="content"
+            type="text"
+            value={this.state.content}
+            onChange={evt => this.setState({ content: evt.target.value })}
+            required
+          />
+        </form>
+      </div>
     );
   }
 }

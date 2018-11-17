@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo';
 import { Link } from 'react-router';
 import { fetchSongs as query, deleteSong as mutation } from '../queries';
 //alias for fetchSongs and deleteSong
+//this application needs an internet connection to work because GQL makes a call to mongoDB
 
 class SongList extends Component {
   async deleteSong(id) {
@@ -19,16 +20,17 @@ class SongList extends Component {
   render() {
     //id is used when deleting a song
     const { songs, loading } = this.props.data;
+    console.log(this.props.data);
     //see if song is loading if so display loading
     //if songs loaded map songs to client view
-    return loading ? (
-      <div>Loading</div>
+    return !songs ? (
+      <div>Loading22</div>
     ) : (
       <div>
         <ul className="collection">
           {songs.map(({ id, title }) => (
             <li key={id} className="collection-item">
-              {title}
+              <Link to={`/songs/${id}`}>{title}</Link>
               <i className="material-icons" onClick={() => this.deleteSong(id)}>
                 delete
               </i>
