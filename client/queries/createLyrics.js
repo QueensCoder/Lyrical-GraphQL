@@ -7,7 +7,9 @@ export default gql`
       lyrics {
         id
         content
+        likes
       }
     }
   }
 `;
+//needed to add likes to query
